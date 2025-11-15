@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Bingo I.E.D Simón Bolívar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Pantalla de Bienvenida -->
+        <div class="welcome-screen active">
+            <h2 class="welcome-title">¡Bienvenidos al Gran Bingo del I.E.D Simón Bolívar!</h2>
+            <p class="welcome-message">Estás a punto de participar en una emocionante jornada de bingo donde la diversión y los premios están garantizados. Prepara tus cartones y ¡que comience el juego!</p>
+            <button class="btn-start" id="startBtn">
+                <i class="fas fa-play-circle"></i> Comenzar
+            </button>
+        </div>
+        
+        <!-- Pantalla de Instrucciones -->
+        <div class="instructions-screen">
+            <h2 class="instructions-title">Instrucciones del Juego</h2>
+            <div class="instructions-content">
+                <p>El bingo se desarrollará de la siguiente manera:</p>
+                <ul class="instructions-list">
+                    <li>Las balotas se cantarán automáticamente cada 8 segundos con una voz femenina clara.</li>
+                    <li>Cada balota tendrá una letra (B, I, N, G, O) y un número.</li>
+                    <li>Marca los números en tus cartones según vayan siendo cantados.</li>
+                    <li>Cuando completes el cartón del modo que estemos jugando grita "¡Bingo!"</li>
+                    <li>¡Diviértete eso es lo mas importante y mucha suerte!</li>
+                </ul>
+                <p>Haz clic en "Comenzar Juego" cuando estés listo.</p>
+            </div>
+            <button class="btn-begin" id="beginBtn">
+                <i class="fas fa-dice"></i> Comenzar Juego
+            </button>
+        </div>
+        
+        <!-- Pantalla de Selección de Modo -->
+        <div class="mode-screen">
+            <h2 class="mode-title">Modo de Juego</h2>
+            <div class="mode-options" id="modeOptionsContainer">
+                <!-- Los modos se cargarán dinámicamente aquí -->
+            </div>
+            
+            <!-- Descripción del modo seleccionado -->
+            <div class="mode-description" id="modeDescription" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h3 style="margin-bottom: 10px;">Cómo ganar con este modo:</h3>
+                <p id="modeDescriptionText"></p>
+            </div>
+            
+            <!-- Ejemplo visual del modo seleccionado -->
+            <div class="mode-example" id="modeExample">
+                <div class="mode-example-title">Ejemplo de este modo:</div>
+                <div class="example-bingo-card" id="exampleBingoCard"></div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-begin" id="startGameBtn">
+                    <i class="fas fa-play"></i> Iniciar Bingo
+                </button>
+                <button class="btn-custom-mode" id="customModeBtn">
+                    <i class="fas fa-plus-circle"></i> Crear/Editar Modo Personalizado
+                </button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Editor de Modos Personalizados -->
+        <div class="custom-mode-screen">
+            <h2 class="custom-mode-title">Crear/Editar Modo de Juego Personalizado</h2>
+            
+            <div class="custom-mode-form">
+                <div class="form-group">
+                    <label for="customModeName">Nombre del Modo:</label>
+                    <input type="text" id="customModeName" placeholder="Ej: Cuatro Esquinas">
+                </div>
+                <div class="form-group">
+                    <label for="customModeDescription">Descripción:</label>
+                    <input type="text" id="customModeDescription" placeholder="Ej: Gana al completar las cuatro esquinas del cartón">
+                </div>
+                
+                <p style="margin-bottom: 10px; font-weight: bold;">Selecciona las casillas que deben completarse para ganar:</p>
+                <div class="custom-bingo-card" id="customBingoCard"></div>
+                
+                <div class="controls">
+                    <button class="btn-tertiary" id="saveCustomModeBtn">
+                        <i class="fas fa-save"></i> Guardar Modo
+                    </button>
+                    <button class="btn-secondary" id="cancelCustomModeBtn">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="custom-modes-list" id="customModesList">
+                <h3 style="margin-bottom: 15px;">Tus Modos Personalizados</h3>
+                <!-- Los modos personalizados se agregarán aquí dinámicamente -->
+            </div>
+        </div>
+        
+        <!-- Pantalla de Juego - DISEÑO COMPACTO -->
+        <div class="game-screen">
+            <div class="game-horizontal-container">
+                <!-- Panel Izquierdo: Cantador de Balotas -->
+                <div class="left-panel">
+                    <div class="current-ball-container">
+                        <div class="balls-display">
+                            <div class="previous-ball" id="previousBall">
+                                <div class="ball-letter" id="prevBallLetter">B</div>
+                                <div class="ball-number" id="prevBallNumber">00</div>
+                            </div>
+                            
+                            <div class="current-ball" id="currentBall">
+                                <div class="ball-letter" id="ballLetter">B</div>
+                                <div class="ball-number" id="ballNumber">00</div>
+                            </div>
+                        </div>
+                        
+                        <p class="game-message" id="gameMessage">¡Que comience el juego! Buena suerte a todos.</p>
+                        
+                        <div class="controls">
+                            <button class="btn-primary" id="pauseBtn">
+                                <i class="fas fa-pause"></i> Pausar
+                            </button>
+                            <!-- BOTÓN DE BINGO - SE MANTIENE EXACTAMENTE IGUAL -->
+                            <button class="btn-bingo" id="bingoBtn">
+                                <i class="fas fa-trophy"></i> ¡Bingo!
+                            </button>
+                            <button class="btn-stats" id="statsBtn">
+                                <i class="fas fa-chart-bar"></i> Estadísticas
+                            </button>
+                            <button class="btn-celebration" id="finishBtn">
+                                <i class="fas fa-flag-checkered"></i> Finalizar Bingo
+                            </button>
+                            <button class="btn-tertiary" id="resetBtn">
+                                <i class="fas fa-sync-alt"></i> Nueva Partida
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Panel Derecho: Historial de Balotas Compacto -->
+                <div class="right-panel">
+                    <div class="balls-history">
+                        <h3 class="balls-history-title">Historial de Balotas</h3>
+                        <div class="full-bingo-card" id="historyBingoCard">
+                            <div class="full-bingo-header">Todas las Balotas del Bingo</div>
+                        </div>
+                        
+                        <!-- Estadísticas compactas -->
+                        <div class="game-stats-right">
+                            <div class="stat-item-right">
+                                <div class="stat-value-right" id="totalBalls">0</div>
+                                <div class="stat-label-right">Balotas Cantadas</div>
+                            </div>
+                            <div class="stat-item-right">
+                                <div class="stat-value-right" id="timer">00:00</div>
+                                <div class="stat-label-right">Tiempo Transcurrido</div>
+                            </div>
+                            <div class="stat-item-right">
+                                <div class="stat-value-right" id="remaining">75</div>
+                                <div class="stat-label-right">Balotas Restantes</div>
+                            </div>
+                            <div class="stat-item-right">
+                                <div class="stat-value-right" id="gameMode">-</div>
+                                <div class="stat-label-right">Modo de Juego</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Estadísticas -->
+        <div class="stats-screen">
+            <h2 class="instructions-title">Estadísticas del Bingo</h2>
+            
+            <div class="stats-container">
+                <div class="stats-section">
+                    <h3>Estadísticas Generales</h3>
+                    <ul class="stats-list" id="generalStats">
+                        <!-- Se llenará dinámicamente -->
+                    </ul>
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Historial de Ganadores</h3>
+                    <div class="winners-list" id="winnersList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Modos de Juego Más Usados</h3>
+                    <ul class="stats-list" id="modeStats">
+                        <!-- Se llenará dinámicamente -->
+                    </ul>
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Últimas Partidas</h3>
+                    <ul class="stats-list" id="gameHistory">
+                        <!-- Se llenará dinámicamente -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Sección para eliminar datos -->
+            <div class="delete-data-section">
+                <h3>Gestión de Datos</h3>
+                <p>Esta acción eliminará todos los datos guardados (estadísticas, ganadores y tiempo), pero conservará tus modos personalizados.</p>
+                <button class="btn-danger" id="deleteDataBtn">
+                    <i class="fas fa-trash"></i> Eliminar Datos 
+                </button>
+            </div>
+            
+            <div class="controls" style="margin-top: 20px;">
+                <button class="btn-primary" id="backToGameBtn">
+                    <i class="fas fa-arrow-left"></i> Volver al Juego
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal de Bingo Compacto -->
+        <div class="bingo-modal" id="bingoModal">
+            <div class="modal-content">
+                <h2 class="modal-title" id="modalTitle">¡Alguien cantó Bingo!</h2>
+                <p class="modal-message" id="modalMessage">Selecciona los números del cartón del jugador para verificar:</p>
+                
+                <div class="full-bingo-card" id="fullBingoCard">
+                    <div class="full-bingo-header">Todas las Balotas del Bingo</div>
+                </div>
+                
+                <div id="verificationResult"></div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-btn correct" id="correctBtn">
+                        <i class="fas fa-check"></i> Bingo Correcto
+                    </button>
+                    <button class="modal-btn incorrect" id="incorrectBtn">
+                        <i class="fas fa-times"></i> Bingo Incorrecto
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal para registrar ganador -->
+        <div class="winner-modal" id="winnerModal">
+            <div class="modal-content">
+                <h2 class="modal-title" style="color: #2ecc71;">¡Bingo Correcto!</h2>
+                <p class="modal-message">Tenemos un ganador. Por favor, ingresa el nombre del jugador:</p>
+                
+                <div class="winner-form">
+                    <input type="text" id="winnerName" placeholder="Nombre del ganador" maxlength="50">
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-btn correct" id="saveWinnerBtn">
+                        <i class="fas fa-save"></i> Guardar Ganador
+                    </button>
+                    <button class="modal-btn incorrect" id="cancelWinnerBtn">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Celebración Final -->
+        <div class="celebration-screen" id="celebrationScreen">
+            <div class="modal-content">
+                <h2 class="celebration-title">¡FELICITACIONES!</h2>
+                
+                <div class="winners-celebration" id="winnersCelebration">
+                    <!-- Los ganadores se mostrarán aquí -->
+                </div>
+                
+                <!-- Información del creador -->
+                <div class="creator-info">
+                    <div class="creator-photo">
+                        <img src="b218fb5a0f7c560f6bf48ee6d5825cc2.jpg" alt="Foto del creador">
+                    </div>
+                    <div class="creator-name">Isaac Gonzalez</div>
+                    <div class="creator-role">Creador del Bingo</div>
+                    <div class="creator-description">
+                      Soy un estudiante del grado 1001 en la Institución Educativa, actualmente en formación como Técnico en Programación de Software en SENA TIC. Me caracterizo por mi interés en la tecnología, el desarrollo de software y la búsqueda constante de nuevos conocimientos para mejorar mis habilidades como futuro programador.
+                    </div>
+                </div>
+                
+                <div class="final-message" id="finalMessage">
+                    <!-- Mensaje final se mostrará aquí -->
+                </div>
+                
+                <div class="modal-buttons" style="margin-top: 30px;">
+                    <button class="modal-btn correct" id="backToMenuBtn">
+                        <i class="fas fa-home"></i> Volver al Menú Principal
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="overlay" id="overlay"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
